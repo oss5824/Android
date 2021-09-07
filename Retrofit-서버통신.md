@@ -10,7 +10,7 @@
 + 서버와 통신을 하기 위해 Retrofit 객체 필요
 + Retrofit.Build()를 통해 객체를 생성할 수 있음
 + 어디서든 필요할 수 있기 때문에 싱글톤 패턴을 이용해 객체를 생성
-```
+```kotlin
 object RetrofitBuilder{
     private val retrofit = Retrofit.Builder()
     .baseUrl("http://")
@@ -30,7 +30,7 @@ object RetrofitBuilder{
 ## Retrofit 요청과 응답
 + 통신을 할 때, JSON객체를 통해 데이터를 주고 받음
 + 서버에 정의된 변수의 이름과 클라이언트에 정의된 변수의 이름이 같다면 스스로 대응시켜주지만 그렇지 않으면 @SerializedName 어노테이션을 사용해줘야 함
-```
+```kotlin
 data class UserInfo(
     @SerializedName("email")val id: String,
     @SerializedName("password")val pw: String,
@@ -44,7 +44,7 @@ data class UserInfoResponse(
 ## API 인터페이스
 + 서버와 통신하기 위해서는 API에 따라 Retrofit 객체가 구현할 API Interface를 정의함
 + GET HTTP Request
-```
+```kotlin
 interface UserInterface{
     @GET("user")
     fun getUserInfo(@Query("email")id:String,
@@ -55,7 +55,7 @@ interface UserInterface{
 + 통신을 할 때 비동기 처리를 해줘야 하기 때문에 Retrofit2가 제공하는 Call 객체를 사용해 Callback 구현
 
 # 통신
-```
+```kotlin
     RetrofitBuilder.api.getUserInfo(email,password,nick)
     .enqueue(object: Callback<UserInfoResponse>{
         override fun onResponse(call: Call<UserInfoResponse>, response: Response<UserInfoResponse>) {
