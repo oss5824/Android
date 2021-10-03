@@ -27,7 +27,7 @@
 ## View inflate하기  
 + inflater에서 view객체를 만들기 위해서는 inflate를 사용하면 됨  
 + inflate(resource: Int, root: ViewGroup?, attachToRoot: Boolean)  
-  - resource: View르 ㄹ만들고 싶은 레이아웃 파일의 id  
+  - resource: View를 만들고 싶은 레이아웃 파일의 id  
   - root: 생성될 View의 parent를 명시  
   - attachToRoot: true로 설정해줄 경우 root의 자식 View로 자동으로 추가됨(내가 사용할 때는 보통 false로 작성했음)  
   - return: attachRoot에 따라서 return 값이 달라지고 true일 경우 root가 false일 경우 XML내 최상위 뷰가 리턴 됨      
