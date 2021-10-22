@@ -86,3 +86,50 @@
 + 검색을 위해선 startDiscovery()를 호출하고 이 프로세스는 비동기식이고 검색이 성공적으로 시작되었는지를 나타내는 bool 값을 반환
 + 앱이 검색된 기기에 대해 정보를 수신하기 위해선 ACTION_FOUND인텐트에 대한 BraodcastReceivcer를 등록해야 함
 + 시스템이 각 기기에 대해 인텐트를 브로드캐스트함
++ BluetoothDevice객체에서는 MAC주소만 있으면 되고 이것은 getAddress()를 호출해 검색
+```kotlin
+    override fun onCreate(savedInstanceState: Bundle?){
+        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        registerReceiver(receiver,filter)
+    }
+    private val receiver=object:BroadcastReceiver(){
+        override fun onReceive(context:Context,intent:Intent){
+            val action:String=intent.action
+            when(action){
+                BluetoothDevice.ACTION_FOUND->{
+                    // DEVICE가 FOUND되었을 때 블루투스 장치 object를 가져오고 Intent로부터 그것의 정보를 가져옴
+                    val device: BluetoothDevice=intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
+                    val deviceName=device.name
+                    val deviceHardWareAddress=device.address // MAC주소
+                }
+            }
+        }
+    }
+    override fun onDestory(){
+        super.onDestroy()
+
+        unregisterReceiver(receiver)
+    }
+
+```
+
+## 검색 기능 활성화
++ 로컬 기기를 다른 기기에서 검색할 수 있게 하려면 ACTION_REQUEST_DISCOVERALBE 인텐트를 사용해 startActivityForResult(Intent, int)를 호출함
++ 검색 기능 활성화 대화 상자가 나온 후 사용자가 YES를 선택하면 기기는 지정된 시간 동안 검색이 가능하게 되고 Activity가 onActivityResult()콜백에 대한 호출을 수신하고 그게 아니면 RESULT_CANCELED
+```kotlin
+    // 기기를 10분간 검색할 수 있게 설정
+    val discoverableIntent: Intent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply{
+        putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION,600)
+    }
+    startActivity(discoverableIntent)
+```
+
+## 기기 연결
++ 두 기기 사이의 연결을 하기위해서 서버측 메커니즘과 클라이언트측 메커니즘을 모두 구현해야 함
+    - 한 기기는 서버 소켓을 열고 다른 기기는 서버 기기의 MAC주소를 사용해 연결을 시작해야하기 때문
+    - 서버, 클라이언트 기기는 각각 다른 방식으로 필요한 BluetoothSocket을 획득
+    - 서버는 수신되는 연결을 수락할 때 소켓 정보를 받고 클라이언트는 서버에 대한 채널을 열 때 소켓정보를 제공
++ 서버와 클라이언트가 동일한 채널에 연결된 BluetoothSocket이 있는 경우 서로 연결된 것으로 간주하고 해당 시점에 각 기기가 입력 및 출력 스트림을 획득할 수 있고 데이터 전송을 시작할 수 있음
+
+
+
