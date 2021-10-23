@@ -131,5 +131,30 @@
     - 서버는 수신되는 연결을 수락할 때 소켓 정보를 받고 클라이언트는 서버에 대한 채널을 열 때 소켓정보를 제공
 + 서버와 클라이언트가 동일한 채널에 연결된 BluetoothSocket이 있는 경우 서로 연결된 것으로 간주하고 해당 시점에 각 기기가 입력 및 출력 스트림을 획득할 수 있고 데이터 전송을 시작할 수 있음
 
+## 기준 클래스와 인터페이스
++ 모든 Bluetooth API는 android.bluetooth 패키지에서 구할 수 있음
+### 다양한 인터페이스 및 클래스
++ BluetoothAdapter
+    - 로컬 블루투스 어댑터를 나타내고 블루투스 상호작용에 대한 진입점
+    - 이것을 통해 다른 블루투스 기기를 검색, 페어링 된 기기목록을 쿼리, 알려진 MAC 주소로 BluetoothDevice 인스턴스화, 다른 기기로부터의 통신을 수신 대기하는 BluetoothServerSocket을 만들 수 있음
 
++ BluetoothDevice
+    - 원격 블루투스 기기를 나타내고 이를 사용해 BluetoothSocket을 통한 원격 기기와 연결을 요청하거나 이름,주소,클래스,연결 상태와 같은 기본적인 기기의 정보를 쿼리할 수 있음
 
++ BluetoothSocket
+  - BluetoothSocket에 대한 인터페이스를 나타내고 이것은 InputStream이나 OutputStream을 통해 다른 블루투스 기기와 데이터 교환을 할 수 있게 해주는 연결 지점 
+
++ BluetoothClass
+    - 블루투스 기기의 특징이나 기능에 대한 설명
+    - 기기 클래스와 서비스를 정의하는 읽기 전용
+    - 기기의 유형에 대해 유용한 힌트 제공하지만 이것만으로 기기가 지원하는 모든 것이 설명되는 것이 아님
+
++ BluetoothHeadset
+    - 블루투스 헤드셋과 휴대폰을 같이 사용할 수 있도록 지원
+    - Bluetooth Headset 프로필 및 Hands-Free 프로필이 포함
+
++ BluetoothA2dp
+    - A2DP를 사용해 블루투스 연결을 통해 고품질 오디오 스트리밍 방법을 정의
+
++ BluetoothProfile.ServiceListener
+    - 프로필을 실행하는 내부서비스와 연결하거나 끊을 때 BluetoothProfile IPC client에 알리는 인터페이스
