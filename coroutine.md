@@ -28,7 +28,19 @@
 + launch(), async()
     - Job과 Deffered 인스터스를 반환(Deffered는 Job을 상속한 클래스)
     - 실행이 가능하고 전자는 상태만 관리하고 후자는 상태관리와 결과를 반환 받을 수 있음
+    - launch는 동기작업이고 async는 비동기 작업
     - async()는 결과를 받아서 사용할 수 있고 이를 처리하기 위해 await()를 사용함
+```kotlin
+    // Main안쪽의 async가 비동기로 실행이 되고 Main밖의 토스트 메시지가 먼저 출력이 됨(Main안에서는 작업이 늦어지더라도 Main밖에서는 작업이 계속 진행 됨)
+    // 핸들러를 사용해서 정해진 시간만큼 기다리는 것은 근본적인 해결책이 되지는 못함
+    CoroutineScope(Dispatchers.Main).launch{
+        CoroutineScope(Dispatchers.Default).async{
+            // 네트워크 작업
+        }.await()
+        // UI 업데이트
+    }
+    Toast.makeText(this,"메시지",Toast.LENGTH_SHORT).show()
+```
 + cancel()
     - 동작을 멈추게 해주고 스코프안에 다른 코루틴들이 존재한다면 그 또한 모두 멈춤
 + delay()
